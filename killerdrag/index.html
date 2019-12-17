@@ -1,0 +1,471 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>KillerDrag 2.7 Dev Sandbox</title>
+    <link href="//fonts.googleapis.com/css?family=Solway&display=swap" rel="stylesheet">
+
+    <link href="css/killerdrag.demo.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="demo-killerdrag">
+        <div class="demo-overlay" style="display:none">
+        </div>
+
+        <div class="demo-intro" style="display:none">
+            <button id="closeInitMenu">close</button>
+            <h1>KillerDrag.js</h1>
+            <div id="MyKillerDragControls">
+            </div>
+            <button id="MyInitButton">initialize</button>
+        </div>
+
+        <div class="demo-control-area">
+            <button id="openInitMenu" style>Open initialization Menu</button>
+            <div class="demo-session-controls">
+                <button id="toggleSessionControls" style="display:none;">Toggle Controls</button>
+                <button id="logData" style="display: none;">console.log(killer)</button>
+            </div>
+            <div id="MySessionControls"></div>
+        </div>
+        
+        <div id="MyKillerDrag" style="position:relative">
+
+            <!-- the script will just look for these special css classes, the type of html elements don't matter. -->
+            <!-- the alternative would be to generate ALL html from a JSON object with the right structure... -->
+
+            <article class="DEMO_TILE kd_draggable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        1
+                    </div>
+                </div>
+
+                <article class="DEMO_TILE kd_draggable kd_droppable">
+                    <div class="outer">
+                        <div class="inner">
+                            2
+                        </div>
+                    </div>
+                </article>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        3
+                        <div class="demo-controls">
+                            <div><input type="checkbox" /><label>draggable</label></div>
+                            <div><input type="checkbox" /><label>droppable</label></div>
+                            <div><input type="checkbox" /><label>dropzone</label></div>
+                            <div><input type="checkbox" /><label>smashy</label></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable kd_spinnable">
+                <!-- NEW KEY CLASSES FOR KILLERDRAG: 
+                    these  control the closest parent KD elem...? -->
+                <div class="kd_controls">
+                    <div class="kd_spin_ccw"></div>
+                    <div class="kd_spinhandle"></div>
+                    <div class="kd_spin_cw"></div>
+                    <div class="kd_fliphandle"></div>
+                </div>
+
+                <div class="outer">
+                    <div class="inner">
+                        4
+                    </div>
+                </div>
+
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        5
+                    </div>
+                </div>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable">
+                <div class="outer">
+                    <div class="inner">
+                        6
+
+                        <input type="text" />
+                        <a href="#">anchor</a>
+                        <button>button</button>
+                    </div>
+                </div>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable">
+                <div class="outer">
+                    <div class="inner">
+                        7
+                    </div>
+                </div>
+            </article>
+
+            <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        8
+                    </div>
+                </div>
+            </article>
+            <article class="DEMO_TILE kd_draggable">
+                <div class="outer">
+                    <div class="inner">
+                        9
+                    </div>
+                </div>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        10
+                    </div>
+                </div>
+
+                <article class="DEMO_TILE kd_draggable">
+                    <div class="outer">
+                        <div class="inner">
+                            11
+                        </div>
+                    </div>
+                </article>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        12
+                    </div>
+                </div>
+                <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                    <div class="outer">
+                        <div class="inner">
+                            13
+                        </div>
+                    </div>
+                </article>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        14
+                    </div>
+                </div>
+                <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                    <div class="outer">
+                        <div class="inner">
+                            15
+                        </div>
+                    </div>
+                    <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
+                        <div class="outer">
+                            <div class="inner">
+                                16
+                            </div>
+                        </div>
+                        <article class="DEMO_TILE kd_draggable kd_droppable">
+                            <div class="outer">
+                                <div class="inner">
+                                    17
+                                </div>
+                            </div>
+                        </article>
+                    </article>
+                </article>
+            </article>
+            <article class="DEMO_TILE kd_draggable kd_droppable">
+                <div class="outer">
+                    <div class="inner">
+                        18
+                        <div>Some element...</div>
+                        <div>Some other element...</div>
+                    </div>
+                </div>
+
+            </article>
+            <article class="DEMO_TILE kd_droppable">
+                <div class="outer">
+                    <div class="inner">
+                        19
+                    </div>
+                </div>
+            </article>
+
+            <article class="DEMO_TILE kd_dropzone">
+                <div class="outer">
+                    <div class="inner">
+                        20
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/mousetrap.min.js"></script>
+    <script src="js/lib/jquery.killerdrag.2.7.dev.js"></script>
+
+    <script>
+        var demoSettings = {
+            //some way nice defaults
+            initialization: {
+                //TODO: autopos might become redundant with grid. leave it in place but disabled?
+                controlsCanvasId: "MySessionControls",
+            },
+            grid: { //TODO: grid default should actually be false, but just for now...
+                scale: 1, //likewise.
+                enable: true,
+                cols: 1, //it will grow as needed when grid is built.
+                rows: 1,
+                cellPadding: 1,
+                centerElems: false,
+                autoGrow: true,
+                autoShrink: true,
+                //outerCells: 1, //Min 1 for now. If 0, I don't know how autoGrow can work! drag offscreen? Would not be a good UX anyways.
+            },
+            draggables: {
+                dragThreshold: 10,
+                ignoreFocusableElems: true,
+                //TODO: rename dragging to draggables
+            },
+            dropzones: {
+                scoopOnMouseup: true,
+                scoopWhileDragging: false,
+                //TODO: rename to centerElems, elemOffsetX/Y
+                centerDroppables: true,
+                droppablePosLeft: 8,
+                droppablePosTop: 8,
+                //TODO: maxNestingLevels: 0, ... default 0 for infinite 
+                //future release...? flowDroppables... for large dropzones that act like mini grids 
+                // *** (at that point you could just instantiate another KD inside the dropzone, right?)
+            },
+            //TODO: Planned for 2.8: rotation, aka "spinnables"
+            spinnables: {
+                //looks for spin handle, otherwise spins from click xy
+                snapDegrees: 5, //degrees to snap to
+                //TODO: kd_spin_handle and kd_drag_handle need to be things
+                randomSkew: 5, //max number of degrees to randomly skew each card at all times. Intended to simulate physical paper. Cool effect.
+            },
+            //TODO: Planned for 2.8: "flippables"
+            flippables: {
+                //looks for flip handle, otherwise flips on click.
+                //if no reverse side, blank side is shown and content is obscured.
+                //so some core css is now involved!
+            },
+            /*future release: "smashables"
+            smashables: {
+                pushDraggables: false, //etc
+            },
+            */
+            collisions: {
+                collisionTolerance: 0,
+                //? stopOnCollision: true, //draggable colliding with smashy will not pass when dragged
+                //? revertAfterCollide: false //draggable colliding with smashy will revert on mouseup
+            },
+            flow: {
+                //distributes elems so they aren't overlapping.
+                enable: true,
+                cols: 6,
+                spacing: 33,
+            },
+            animation: {
+                // duration to animate each event type.
+                // 0 = disable animation script
+                drop: 200,
+                revert: 600,
+                //TODO: NEW IN 2.7
+                snap: 1000,
+
+                //todo: autoposition is now called flow (vs snap which is to grid)
+                flow: 500, //controls slide duration
+                flowStagger: 200,
+                flowFade: 500,
+            },
+            debug: {
+                warnings: true,
+                events: false,
+                performance: false,
+                verbose: false,
+            }
+        };
+
+        var demoFeedbackTemplate = `
+        <div class="DEMO_FEEDBACK">
+            <div class="colliding">[colliding]</div>
+            <div class="collided">[collided]</div>
+
+            <div class="draggable">[draggable]</div>
+            <div class="droppable">[droppable]</div>
+            <div class="dropzone">[dropzone]</div>
+            <div class="smashy">[smashy]</div>
+
+            <div class="in-dropzone">[in dropzone]</div>
+            <div class="entering-dropzone">[entering dropzone]</div>
+            <div class="leaving-dropzone">[leaving dropzone]</div>
+            <div class="drop-ready">[ready to receive drop]</div>
+		    <div class="drag-out-pending">[drag out pending]</div>
+        </div>
+        `;
+
+        //go ahead and fire it up...
+        $(document).ready(function () {
+            //show intro modal dialog...
+
+            $("#closeInitMenu").click(function () {
+                $(".demo-overlay, .demo-intro").hide();
+                $("#openInitMenu").show();
+                $("body").removeClass("modalActive");
+            });
+            $("#openInitMenu").click(function () {
+                $(".demo-overlay, .demo-intro").show();
+                $("#openInitMenu").hide();
+                $("body").addClass("modalActive");
+            });
+            $(".DEMO_TILE").each(function () {
+                $(this).append(demoFeedbackTemplate);
+            });
+
+            var $killerDragCanvas = $("#MyKillerDrag");
+            var $controlsCanvas = $("#MyKillerDragControls");
+            var $sessionControlsCanvas = $("#MySessionControls");
+
+            //wait for controls to init before doing this...
+            $controlsCanvas.bind("demo_event_generate_init_controls", function () {
+
+                $(".demo-overlay, .demo-intro").show();
+                $("body").addClass("modalActive");
+
+                $controlsCanvas.find("[type=checkbox]").on("change", function (e) {
+                    console.log(e)
+                });
+
+                $controlsCanvas.unbind("demo_event_generate_init_controls");
+            });
+
+            //now generate pre-init controls...
+            userControls_generate($controlsCanvas, demoSettings);
+
+
+            $("#MyInitButton").click(function () {
+                //update settings from user inputs
+                var userSettings = userControls_updateData($controlsCanvas, demoSettings);
+
+                //generate session controls
+                userControls_generate($sessionControlsCanvas, userSettings, ["dragging", "dropzones", "collisions", "autoPosition", "animation", "debug"]);
+
+                /*--------------------------*/
+                //var killer = $killerDragCanvas.killerDrag(userSettings);
+
+                //create the instance:
+                $killerDragCanvas.killerDrag(userSettings);
+                //access the instance:
+                var killer = $killerDragCanvas.data('killerDrag');
+                killer.publicMethod("hello!");
+                /*--------------------------*/
+
+                $("body").removeClass("modalActive");
+                $(".demo-overlay, .demo-intro").remove();
+                $("#openInitMenu").hide();
+
+                $("#MySessionControls").hide();
+                $("#toggleSessionControls").show();
+                $("#toggleSessionControls").click(function () {
+                    $("#MySessionControls").slideToggle();
+                });
+
+                $("#logData").show();
+                $("#logData").click(function () {
+                    console.log(killer);
+                });
+
+            });
+
+        });
+
+        /*======================*/
+        function userControls_generate($elem, data, groups) {
+            //build an HTML form dynamically based on the property types and values in the data object, then spit the resulting markup into $elem.
+            //only supports booleans numbers and strings.
+            var $form = $($.parseHTML(`<div class="kd_controls"><form></form></div>`));
+
+            for (const property in data) {
+
+                if (groups) {
+                    //groups is optional array of strings matching only the property names to include (e.g. initialization, dragging, collisions). 
+                    //If groups is undefined, all settings groups will be included.
+                    if (groups.indexOf(property) === -1) {
+                        continue;
+                    }
+                }
+
+                var $fieldset = $($.parseHTML(`<fieldset><legend></legend></fieldset>`));
+                $fieldset.addClass("kd_" + property).find("legend").text(property);
+
+                for (const sub in data[property]) {
+                    let val = data[property][sub];
+                    let dataType = typeof val;
+                    let id = "kd_control_" + property + "_" + sub;
+                    var $field = $($.parseHTML(`<div class="kd_control"><input id="` + id + `" data-control="` + property + `_` + sub + `"/><label for="` + id + `">` + sub + `</label></div>`));
+
+                    if (dataType === "boolean") {
+                        $field.addClass("kd_checkbox").find("input").attr("type", "checkbox");
+                        if (val === true) {
+                            $field.find("input").attr("checked", "checked");
+                        }
+                    } else {
+                        if (dataType === "number") {
+                            $field.addClass("kd_number").find("input").attr("type", "number").val(val);
+                        }
+                        if (dataType === "string") {
+                            $field.addClass("kd_text").find("input").attr("type", "text").val(val);
+                        }
+                    }
+                    $fieldset.append($field);
+                }
+                $form.find("form").append($fieldset);
+            }
+
+            $elem.append($form);
+
+            let demo_event_generate_init_controls = new CustomEvent("demo_event_generate_init_controls");
+            $elem[0].dispatchEvent(demo_event_generate_init_controls);
+
+            return;
+
+        }
+
+        function userControls_updateData($elem, data) {
+            //update settings object (data)
+            for (const property in data) {
+                for (const sub in data[property]) {
+                    let $formInput = $elem.find("[data-control='" + property + `_` + sub + "']");
+                    let val;
+                    if ($formInput.attr("type") === "number") {
+                        val = parseInt($formInput.val());
+                    }
+                    if ($formInput.attr("type") === "checkbox") {
+                        if ($formInput.is(':checked')) {
+                            val = true;
+                        } else {
+                            val = false;
+                        }
+                    }
+                    if ($formInput.attr("type") === "text") {
+                        val = $formInput.val();
+                    }
+                    data[property][sub] = val;
+                }
+            }
+            return data;
+        }
+
+    </script>
+</body>
+
+</html>

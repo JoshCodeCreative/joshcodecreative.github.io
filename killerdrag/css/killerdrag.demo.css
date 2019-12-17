@@ -1,0 +1,562 @@
+/*baseline (just for the demo)*/
+
+html {
+	margin: 0;
+	padding: 0;
+}
+body {
+	margin: 0;
+	padding: 0;
+	background: #333;
+}
+
+body.modalActive {
+	overflow: hidden;
+}
+
+
+body, button {
+	font-family: 'Solway', serif;
+}
+
+button {
+	cursor: pointer;
+	font-size: inherit
+}
+
+:focus {
+	outline: none;
+}
+
+a {
+	color: #00d9ff;
+}
+
+a:hover, a:focus {
+	color: #00ff9d;
+}
+
+label[for] {
+	/*this should be default b/c a label with a for attr should always be actionable*/
+	cursor: pointer;
+}
+
+input, button {
+	color: #fff;
+	background: #000;
+	border: 1px solid #888;
+	outline: none;
+}
+
+input:hover, input:focus, button:hover, button:focus {
+	border-color: #00ff9d;
+	color: #00ff9d;
+	box-shadow: 0px 0px 3px 1px #00ff55;
+}
+
+input:hover+label, input:focus+label {
+	color: #00ff9d;
+	text-decoration: underline;
+}
+
+input[type=checkbox] {
+	cursor: pointer;
+}
+
+input[type=checkbox]:hover, input[type=checkbox]:focus {
+	box-shadow: 0px 0px 3px 1px #00ff55;
+}
+
+input[type=text], input[type=number] {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 4px;
+}
+
+/*.*/
+.demo-killerdrag{
+	/*this allows the growing kd-stage to cause its parent div to expand, which in turn allows the controls to expand to match the stage width. 
+	Why this is necessary, IDK. I feel like it should do that with position:static too.
+	Maybe it's because the reason the rel div is growing is because of its abs children. Since they are abs that width is out of flow? */
+	position: absolute;
+}
+
+.demo-overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background: rgba(0, 0, 0, .75);
+	z-index: 999998;
+}
+
+/*.*/
+
+.demo-intro {
+	position: fixed;
+	z-index: 999999;
+	width: 80%;
+	left: 50%;
+	top: 50%;
+	text-align: center;
+	padding: 40px 20px 20px;
+	background: #1a1a1a;
+	border: 1px solid #00ff9d;
+	color: #00ff9d;
+	font-weight: bold;
+	max-height: 90%;
+	overflow: auto;
+	/*hacks for chrome font blurriness related to 2d transforms... none have worked.
+	transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%) translate3d( 0, 0, 0);
+	transform: perspective(1px) scale(1.1) translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.0, 1.0);
+	-webkit-transform: translateZ(0) scale(1.0, 1.0);
+	-webkit-font-smoothing: antialiased;
+	-webkit-font-smoothing: subpixel-antialiased;
+	transform: translate3d(-50.5%, -50.5%, 0);
+	...
+	this seems better:
+	transform: translate(calc(-50% + 0.5px), calc(-50% + 0.5px));
+	*/
+	transform: translateX(-50%) translateY(-50%);
+	/*-webkit-transform: translate(calc(-50% + 0.5px), calc(-50% + 0.5px));*/
+}
+
+.demo-intro h1 {
+	font-size: 32px;
+	margin: 10px 0 20px;
+}
+
+#closeInitMenu {
+	position: absolute;
+	right: 20px;
+	top: 0;
+	padding: 4px 20px;
+	font-size: 14px;
+	min-width: 0;
+}
+
+.demo-control-area button {
+	padding: 4px 20px;
+	font-size: 14px;
+	display:inline-block;
+	margin-right:16px;
+}
+
+#MyInitButton {
+	padding: 20px;
+	font-size: 18px;
+}
+
+/*.
+
+.kd_controls:before,
+.kd_controls:after {
+    content: " "; 
+    display: table;
+}
+
+.kd_controls:after {
+    clear: both;
+}
+.kd_controls form {
+	/*
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	
+}
+*/
+
+.kd_controls fieldset {
+	/*
+	width: 40%;
+	*/
+	margin: 10px;
+	text-align: left;
+	width: auto;
+	display: inline-block;
+	vertical-align: top;
+}
+
+@media screen and (max-width:860px) {
+	.kd_controls form {
+		display: block;
+	}
+	.kd_controls fieldset {
+		width: auto;
+	}
+}
+
+.kd_controls fieldset legend {
+	color: #00ff9d;
+	font-size: 14px;
+	font-weight: normal;
+	display: block;
+	text-align: center;
+}
+
+.kd_controls label {
+	font-weight: normal;
+	display: block;
+	font-size: 14px;
+	color: #ccc;
+	margin-top: 4px;
+	margin-bottom: 8px;
+	margin-left: 4px;
+}
+
+.kd_controls .kd_control {
+	margin: 10px 0;
+}
+
+.kd_controls input[type=text], .kd_controls input[type=number] {
+	width: 100%;
+	padding: 2px 2px 2px 4px;
+	box-sizing: border-box;
+}
+
+.kd_controls input[type=text]+label, .kd_controls input[type=number]+label {
+	font-size: 12px;
+}
+
+.kd_controls .kd_checkbox {
+	position: relative;
+	padding-left: 20px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.kd_controls .kd_checkbox input[type=checkbox] {
+	position: absolute;
+	top: 0;
+	left: 4px;
+	height: 16px;
+	width: 16px;
+	margin: 0;
+}
+
+/*.*/
+
+.demo-intro button {
+	margin: 20px 0 40px;
+	min-width: 240px;
+	padding: 6px 60px;
+	font-size: 16px;
+	outline: none;
+	cursor: pointer;
+}
+
+.demo-intro button:hover {
+	color: #00ff9d;
+	border: 1px solid #00ff9d;
+}
+
+/*==============*/
+
+.demo-control-area {
+	background: #1a1a1a;
+	padding: 20px;
+	min-height: 64px;
+	box-sizing: border-box;
+	position: relative;
+}
+
+#toggleSessionControls {
+	z-index: 9999;
+}
+
+/*==============*/
+
+.DEMO_TILE>.outer {
+	padding: 7px;
+	border: 2px solid #000;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+.DEMO_TILE>.outer>.inner {
+	background: #1a1a1a;
+	color: #fff;
+	height: 100%;
+	font-size: 10px;
+	padding: 5px;
+	box-sizing: border-box;
+	border: 1px solid #000;
+}
+
+/* demo killerdrag elem defaults (all elems get the data-kd-elem attr) */
+
+[data-kd-elem] {
+	box-sizing: border-box;
+	opacity: .9;
+	background: #666;
+	vertical-align: text-bottom;
+	height: 200px;
+	width: 160px;
+	/*disable text selection*/
+	-webkit-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; /* IE10+ */
+	user-select: none; 
+}
+
+[data-kd-elem]:not([data-dragging]):focus {
+	outline: 2px solid #00ff9d;
+}
+
+/* provides real time feedback to user for demo and dev purposes */
+
+.DEMO_FEEDBACK {
+	position: absolute;
+	color: rgb(0, 230, 172);
+	right: 9px;
+	bottom: 9px;
+	left: 9px;
+	font-size: 10px;
+	background: rgba(0, 0, 0, .7);
+	padding: 4px;
+	box-sizing: border-box;
+}
+
+.DEMO_FEEDBACK>div {
+	display: none;
+}
+
+/*.*/
+
+[data-draggable] {
+	background: #1e68f1;
+}
+
+[data-draggable]>.DEMO_FEEDBACK>.draggable {
+	color: #1e68f1;
+}
+
+[data-draggable]>.DEMO_FEEDBACK>.droppable {
+	color: #1e68f1;
+}
+
+[data-draggable]>.DEMO_FEEDBACK>.dropzone {
+	color: #1e68f1;
+}
+
+/*.*/
+
+[data-droppable] {
+	background: #ff19cd;
+}
+
+[data-droppable]>.DEMO_FEEDBACK>.draggable {
+	color: #ff19cd;
+}
+
+[data-droppable]>.DEMO_FEEDBACK>.droppable {
+	color: #ff19cd;
+}
+
+[data-droppable]>.DEMO_FEEDBACK>.dropzone {
+	color: #ff19cd;
+}
+
+/*.*/
+
+[data-dropzone] {
+	background: #0fb618;
+	height:300px;
+	width:300px;
+}
+
+[data-dropzone]>.DEMO_FEEDBACK>.draggable {
+	color: #0fb618;
+}
+
+[data-dropzone]>.DEMO_FEEDBACK>.droppable {
+	color: #0fb618;
+}
+
+[data-dropzone]>.DEMO_FEEDBACK>.dropzone {
+	color: #0fb618;
+}
+
+/*.*/
+
+[data-draggable][data-droppable] {
+	background: #b700ff;
+}
+
+[data-draggable][data-droppable]>.DEMO_FEEDBACK>.draggable {
+	color: #b700ff;
+}
+
+[data-draggable][data-droppable]>.DEMO_FEEDBACK>.droppable {
+	color: #b700ff;
+}
+
+[data-draggable][data-droppable]>.DEMO_FEEDBACK>.dropzone {
+	color: #b700ff;
+}
+
+/*.*/
+
+[data-draggable][data-dropzone] {
+	background: #00ccff;
+}
+
+[data-draggable][data-dropzone]>.DEMO_FEEDBACK>.draggable {
+	color: #00ccff;
+}
+
+[data-draggable][data-dropzone]>.DEMO_FEEDBACK>.droppable {
+	color: #00ccff;
+}
+
+[data-draggable][data-dropzone]>.DEMO_FEEDBACK>.dropzone {
+	color: #00ccff;
+}
+
+/*.*/
+
+[data-draggable][data-droppable][data-dropzone] {
+	background: #00ffaa;
+}
+
+[data-draggable][data-droppable][data-dropzone]>.DEMO_FEEDBACK>.draggable {
+	color: #00ffaa;
+}
+
+[data-draggable][data-droppable][data-dropzone]>.DEMO_FEEDBACK>.droppable {
+	color: #00ffaa;
+}
+
+[data-draggable][data-droppable][data-dropzone]>.DEMO_FEEDBACK>.dropzone {
+	color: #00ffaa;
+}
+
+/*.*/
+
+[data-draggable]>.DEMO_FEEDBACK>.draggable {
+	display: inline-block;
+}
+
+[data-droppable]>.DEMO_FEEDBACK>.droppable {
+	display: inline-block;
+}
+
+[data-dropzone]>.DEMO_FEEDBACK>.dropzone {
+	display: inline-block;
+}
+
+/*.*/
+
+[data-colliding]>.outer {
+	border-color: #ffae00;
+}
+
+[data-colliding]>.DEMO_FEEDBACK>.colliding {
+	display: block;
+	color: #ffae00;
+}
+
+[data-collided]>.outer {
+	border-color: #ffae00;
+}
+
+[data-collided]>.DEMO_FEEDBACK>.collided {
+	display: block;
+	color: #ffae00;
+}
+
+[data-in-dropzone]>.DEMO_FEEDBACK>.in-dropzone {
+	display: block;
+	color: #d400ff;
+}
+
+[data-leaving-dropzone]>.outer, [data-drag-out-pending]>.outer {
+	border-color: #00ccff;
+}
+
+[data-leaving-dropzone]>.DEMO_FEEDBACK>.leaving-dropzone {
+	display: block;
+	color: #00ccff;
+}
+
+[data-drag-out-pending]>.DEMO_FEEDBACK>.drag-out-pending {
+	display: block;
+	color: #00ccff;
+}
+
+[data-entering-dropzone]>.outer {
+	border-color: #d400ff;
+}
+
+[data-drop-ready]>.outer {
+	border-color: #ff0095;
+}
+
+[data-entering-dropzone]>.DEMO_FEEDBACK>.entering-dropzone {
+	display: block;
+	color: #d400ff;
+}
+
+[data-drop-ready]>.DEMO_FEEDBACK>.drop-ready {
+	display: block;
+	color: #ff0095;
+}
+
+[data-scooping] {
+	outline: 1px solid #ffee00;
+}
+
+[data-being-scooped] {
+	outline: 1px solid #ffee00;
+}
+
+[data-warning] {
+	background: #ff0000;
+}
+
+/*A VERY SPECIAL STYLE that might be obtrusive but improves UX drastically when user dimension styles are not supplied
+[data-draggable][data-in-dropzone] {
+	width: 0px;
+}
+*/
+
+.kd_stage {
+	/*.*/
+}
+
+.kd_grid {
+	/*.*/
+}
+
+.kd_cell {
+	background: #444;
+	box-sizing: border-box;
+	border: 1px solid #888;
+}
+/*
+.kd_row:first-of-type .kd_cell {
+	border-top-color: red;
+}
+
+.kd_cell:last-of-type {
+	border-right-color: red;
+}
+
+.kd_row:last-of-type .kd_cell {
+	border-bottom-color: red;
+}
+
+.kd_cell:first-of-type {
+	border-left-color: red;
+}
+*/
+
+[data-kd-stage]{
+    outline: 1px solid red;
+    margin: 10px;
+	display: inline-block;
+}
