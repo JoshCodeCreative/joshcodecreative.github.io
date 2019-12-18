@@ -492,7 +492,7 @@ input[type=text], input[type=number] {
 }
 
 [data-kd-stage][data-grid-enabled] {
-    outline: 1px solid red;
+    outline: 1px solid #00ffaa;
     margin: 10px;
 	display: inline-block;
 }

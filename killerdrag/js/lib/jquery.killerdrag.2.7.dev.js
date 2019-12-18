@@ -223,6 +223,10 @@
             }
             $stage.attr("data-kd-stage", "true").addClass("kd_stage");
 
+            if(settings.grid.enable){
+                $stage.attr("data-grid-enabled", "true")
+            }
+
             //jquery obj set representing all killerdrag elements within this instance
             var $allElems = $stage.find(".kd_draggable, .kd_droppable, .kd_dropzone, .kd_smashy");
 
@@ -242,12 +246,6 @@
 
                 //all KD elems must have abs positioning.
                 $elem.css("position", "absolute").css("margin", "0").css("z-index", "1");
-
-                //start all elems with a z-index of 1.
-                let newZObj = {
-                    "elemId": elemId,
-                    "value": 1, //the initial z index value
-                }
 
                 //am I a draggable?
                 if ($elem.hasClass("kd_draggable")) {
