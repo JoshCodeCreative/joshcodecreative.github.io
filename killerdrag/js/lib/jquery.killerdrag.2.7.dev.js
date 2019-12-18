@@ -1058,8 +1058,8 @@
         convertGridToPx: function (gridCoords) {
             //converts grid xy coordinates to pixel values from top left of grid.
             //gridCoords is a [x,y] array
-            let leftPx = this.stage.grid.scale * gridCoords[0];
-            let topPx = this.stage.grid.scale * gridCoords[1];
+            let leftPx = this.settings.grid.scale * gridCoords[0];
+            let topPx = this.settings.grid.scale * gridCoords[1];
             return [leftPx, topPx];
         },
 
@@ -1067,7 +1067,7 @@
             //pos is a [x,y] array
             let x = pos[0];
             let y = pos[1];
-            let s = this.stage.grid.scale;
+            let s = this.settings.grid.scale;
             let newX = Math.round(x / s) * s;
             let newY = Math.round(y / s) * s;
             return [newX, newY];
