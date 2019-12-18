@@ -223,6 +223,9 @@
                 $stage.css("position", "relative");
             }
             $stage.attr("data-kd-stage", "true").addClass("kd_stage");
+            if(settings.grid.enable){
+                $stage.attr("data-grid-enabled", "true");
+            }
 
             //jquery obj set representing all killerdrag elements within this instance
             var $allElems = $stage.find(".kd_draggable, .kd_droppable, .kd_dropzone, .kd_smashy");
@@ -913,10 +916,11 @@
             }
 
             //final cleanup after initialization
-            $allElems.each(function () {
+            /*$allElems.each(function () {
+                //TODO: this was causing false collisions on init flow. Revisit.
                 //some elems may have been in collision while being moved around
                 instance.checkCollisions($(this));
-            });
+            });*/
 
             if (settings.debug.events) {
                 console.log("------------KillerDrag initialized------------");

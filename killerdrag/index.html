@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>KillerDrag 2.7 Dev Sandbox</title>
-    <link href="//fonts.googleapis.com/css?family=Solway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Solway&display=swap" rel="stylesheet">
 
     <link href="css/killerdrag.demo.css" rel="stylesheet">
 </head>
@@ -18,6 +18,8 @@
         <div class="demo-intro" style="display:none">
             <button id="closeInitMenu">close</button>
             <h1>KillerDrag.js</h1>
+            <p>Welcome to the KillerDrag dev sandbox. Adjust the settings below and press the "initialize" button to continue.</p>
+            <!--<p>See the <a href="info.html" target="_blank">explanation page</a> for more information.</p>-->
             <div id="MyKillerDragControls">
             </div>
             <button id="MyInitButton">initialize</button>
@@ -32,10 +34,10 @@
             <div id="MySessionControls"></div>
         </div>
         
-        <div id="MyKillerDrag" style="position:relative">
+        <div id="MyKillerDrag">
 
             <!-- the script will just look for these special css classes, the type of html elements don't matter. -->
-            <!-- the alternative would be to generate ALL html from a JSON object with the right structure... -->
+            <!-- an alternative would be to generate ALL html from a JSON object with the right structure... -->
 
             <article class="DEMO_TILE kd_draggable kd_dropzone">
                 <div class="outer">
@@ -56,25 +58,11 @@
                 <div class="outer">
                     <div class="inner">
                         3
-                        <div class="demo-controls">
-                            <div><input type="checkbox" /><label>draggable</label></div>
-                            <div><input type="checkbox" /><label>droppable</label></div>
-                            <div><input type="checkbox" /><label>dropzone</label></div>
-                            <div><input type="checkbox" /><label>smashy</label></div>
-                        </div>
                     </div>
                 </div>
             </article>
             <article class="DEMO_TILE kd_draggable kd_droppable kd_spinnable">
-                <!-- NEW KEY CLASSES FOR KILLERDRAG: 
-                    these  control the closest parent KD elem...? -->
-                <div class="kd_controls">
-                    <div class="kd_spin_ccw"></div>
-                    <div class="kd_spinhandle"></div>
-                    <div class="kd_spin_cw"></div>
-                    <div class="kd_fliphandle"></div>
-                </div>
-
+                
                 <div class="outer">
                     <div class="inner">
                         4
@@ -183,8 +171,6 @@
                 <div class="outer">
                     <div class="inner">
                         18
-                        <div>Some element...</div>
-                        <div>Some other element...</div>
                     </div>
                 </div>
 
@@ -217,17 +203,6 @@
             initialization: {
                 //TODO: autopos might become redundant with grid. leave it in place but disabled?
                 controlsCanvasId: "MySessionControls",
-            },
-            grid: { //TODO: grid default should actually be false, but just for now...
-                scale: 1, //likewise.
-                enable: true,
-                cols: 1, //it will grow as needed when grid is built.
-                rows: 1,
-                cellPadding: 1,
-                centerElems: false,
-                autoGrow: true,
-                autoShrink: true,
-                //outerCells: 1, //Min 1 for now. If 0, I don't know how autoGrow can work! drag offscreen? Would not be a good UX anyways.
             },
             draggables: {
                 dragThreshold: 10,
@@ -267,6 +242,17 @@
                 collisionTolerance: 0,
                 //? stopOnCollision: true, //draggable colliding with smashy will not pass when dragged
                 //? revertAfterCollide: false //draggable colliding with smashy will revert on mouseup
+            },
+            grid: { //TODO: grid default should actually be false, but just for now...
+                enable: false,
+                cols: 1, //it will grow as needed when grid is built.
+                rows: 1,
+                scale: 1, 
+                cellPadding: 1,
+                centerElems: false,
+                autoGrow: true,
+                autoShrink: true,
+                //outerCells: 1, //Min 1 for now. If 0, I don't know how autoGrow can work! drag offscreen? Would not be a good UX anyways.
             },
             flow: {
                 //distributes elems so they aren't overlapping.
@@ -349,7 +335,7 @@
             });
 
             //now generate pre-init controls...
-            userControls_generate($controlsCanvas, demoSettings);
+            userControls_generate($controlsCanvas, demoSettings, ["dropzones", "collisions", "grid", "flow", "animation", "debug"]);
 
 
             $("#MyInitButton").click(function () {
@@ -357,11 +343,9 @@
                 var userSettings = userControls_updateData($controlsCanvas, demoSettings);
 
                 //generate session controls
-                userControls_generate($sessionControlsCanvas, userSettings, ["dragging", "dropzones", "collisions", "autoPosition", "animation", "debug"]);
+                userControls_generate($sessionControlsCanvas, userSettings, ["dropzones", "collisions", "grid", "flow", "animation", "debug"]);
 
                 /*--------------------------*/
-                //var killer = $killerDragCanvas.killerDrag(userSettings);
-
                 //create the instance:
                 $killerDragCanvas.killerDrag(userSettings);
                 //access the instance:
@@ -383,6 +367,12 @@
                 $("#logData").click(function () {
                     console.log(killer);
                 });
+
+
+                //temp
+                if(!userSettings.grid.enable){
+                    $(".demo-killerdrag").addClass("noGrid");
+                }
 
             });
 
