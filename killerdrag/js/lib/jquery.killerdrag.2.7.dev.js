@@ -929,8 +929,8 @@
 
             var requiredSize = $topLevelElems.length;
 
-            var scale = this.stage.grid.scale;
-            var padding = this.stage.grid.cellPadding;
+            var scale = this.settings.grid.scale;
+            var padding = this.settings.grid.cellPadding;
             if (this.settings.debug.verbose) {
                 console.log("specified scale: " + scale);
                 console.log("padding: " + padding);
@@ -947,7 +947,7 @@
                 }
             });
             if (this.settings.debug.verbose) { console.log("resolved scale: " + scale); }
-            this.stage.grid.scale = scale;
+            this.settings.grid.scale = scale;
 
             //is startingElemsCount less than the number of cells specified by the user in the settings?
             var specifiedSize = (this.settings.grid.cols - 2) * (this.settings.grid.rows - 2);
