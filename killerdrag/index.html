@@ -35,7 +35,6 @@
         </div>
         
         <div id="MyKillerDrag">
-
             <!-- the script will just look for these special css classes, the type of html elements don't matter. -->
             <!-- an alternative would be to generate ALL html from a JSON object with the right structure... -->
 
@@ -45,7 +44,6 @@
                         1
                     </div>
                 </div>
-
                 <article class="DEMO_TILE kd_draggable kd_droppable">
                     <div class="outer">
                         <div class="inner">
@@ -54,6 +52,7 @@
                     </div>
                 </article>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_dropzone">
                 <div class="outer">
                     <div class="inner">
@@ -61,15 +60,15 @@
                     </div>
                 </div>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable kd_spinnable">
-                
                 <div class="outer">
                     <div class="inner">
                         4
                     </div>
                 </div>
-
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
                 <div class="outer">
                     <div class="inner">
@@ -77,6 +76,7 @@
                     </div>
                 </div>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable">
                 <div class="outer">
                     <div class="inner">
@@ -88,6 +88,7 @@
                     </div>
                 </div>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable">
                 <div class="outer">
                     <div class="inner">
@@ -103,6 +104,7 @@
                     </div>
                 </div>
             </article>
+
             <article class="DEMO_TILE kd_draggable">
                 <div class="outer">
                     <div class="inner">
@@ -110,13 +112,13 @@
                     </div>
                 </div>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
                 <div class="outer">
                     <div class="inner">
                         10
                     </div>
                 </div>
-
                 <article class="DEMO_TILE kd_draggable">
                     <div class="outer">
                         <div class="inner">
@@ -125,6 +127,7 @@
                     </div>
                 </article>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable kd_dropzone">
                 <div class="outer">
                     <div class="inner">
@@ -139,6 +142,7 @@
                     </div>
                 </article>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_dropzone">
                 <div class="outer">
                     <div class="inner">
@@ -167,14 +171,15 @@
                     </article>
                 </article>
             </article>
+
             <article class="DEMO_TILE kd_draggable kd_droppable">
                 <div class="outer">
                     <div class="inner">
                         18
                     </div>
                 </div>
-
             </article>
+
             <article class="DEMO_TILE kd_droppable">
                 <div class="outer">
                     <div class="inner">
@@ -201,37 +206,26 @@
         var demoSettings = {
             //some way nice defaults
             initialization: {
-                //TODO: autopos might become redundant with grid. leave it in place but disabled?
                 controlsCanvasId: "MySessionControls",
             },
             draggables: {
                 dragThreshold: 10,
                 ignoreFocusableElems: true,
-                //TODO: rename dragging to draggables
             },
             dropzones: {
                 scoopOnMouseup: true,
                 scoopWhileDragging: false,
-                //TODO: rename to centerElems, elemOffsetX/Y
                 centerDroppables: true,
                 droppablePosLeft: 8,
                 droppablePosTop: 8,
-                //TODO: maxNestingLevels: 0, ... default 0 for infinite 
-                //future release...? flowDroppables... for large dropzones that act like mini grids 
-                // *** (at that point you could just instantiate another KD inside the dropzone, right?)
             },
-            //TODO: Planned for 2.8: rotation, aka "spinnables"
             spinnables: {
-                //looks for spin handle, otherwise spins from click xy
                 snapDegrees: 5, //degrees to snap to
-                //TODO: kd_spin_handle and kd_drag_handle need to be things
                 randomSkew: 5, //max number of degrees to randomly skew each card at all times. Intended to simulate physical paper. Cool effect.
             },
             //TODO: Planned for 2.8: "flippables"
             flippables: {
                 //looks for flip handle, otherwise flips on click.
-                //if no reverse side, blank side is shown and content is obscured.
-                //so some core css is now involved!
             },
             /*future release: "smashables"
             smashables: {
@@ -243,7 +237,7 @@
                 //? stopOnCollision: true, //draggable colliding with smashy will not pass when dragged
                 //? revertAfterCollide: false //draggable colliding with smashy will revert on mouseup
             },
-            grid: { //TODO: grid default should actually be false, but just for now...
+            grid: {
                 enable: false,
                 cols: 1, //it will grow as needed when grid is built.
                 rows: 1,
@@ -252,7 +246,6 @@
                 centerElems: false,
                 autoGrow: true,
                 autoShrink: true,
-                //outerCells: 1, //Min 1 for now. If 0, I don't know how autoGrow can work! drag offscreen? Would not be a good UX anyways.
             },
             flow: {
                 //distributes elems so they aren't overlapping.
@@ -265,7 +258,6 @@
                 // 0 = disable animation script
                 drop: 200,
                 revert: 600,
-                //TODO: NEW IN 2.7
                 snap: 1000,
 
                 //todo: autoposition is now called flow (vs snap which is to grid)

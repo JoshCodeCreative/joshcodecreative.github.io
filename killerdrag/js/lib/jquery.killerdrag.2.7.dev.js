@@ -23,7 +23,7 @@
             this.isDroppable;
             this.isDropzone;
 
-            this.isTopLevel; //TOOD: yet to be implemented, but important to track. isTopLevel is a different question than isInDropzone (only because NONSTANDARD usage allows both to be false). 
+            this.isTopLevel; //TODO: yet to be implemented, but important to track. isTopLevel is a different question than isInDropzone (only because NONSTANDARD usage allows both to be false). 
             //This would be needed for save/load reconstruction processes, but also likely useful elsewhere.
 
             this.isInDropzone;
@@ -90,9 +90,9 @@
                 initialization: {
                     controlsCanvasId: "MySessionControls",
                 },
-                grid: { //TODO: grid default should actually be false, but just for now...
-                    scale: 1, //likewise.
+                grid: { 
                     enable: false,
+                    scale: 1, 
                     cols: 1, //set to 1 because it will grow as needed when grid is built.
                     rows: 1,
                     cellPadding: 1, //in PX. This val will be applied on all 4 sides of largest elem when determining outer grid cell dimensions.
@@ -170,7 +170,6 @@
                 }
             };
 
-            //not sure why but we must use extend in deep mode to keep defaults when those keys are undefined on user side
             var settings = $.extend(true, this.defaultSettings, userSettings);
 
             return this.each(function (i) {
@@ -223,9 +222,6 @@
                 $stage.css("position", "relative");
             }
             $stage.attr("data-kd-stage", "true").addClass("kd_stage");
-            if(settings.grid.enable){
-                $stage.attr("data-grid-enabled", "true");
-            }
 
             //jquery obj set representing all killerdrag elements within this instance
             var $allElems = $stage.find(".kd_draggable, .kd_droppable, .kd_dropzone, .kd_smashy");
@@ -322,7 +318,6 @@
             var $smashys = $allElems.filter("[data-smashy]");
 
             //now loop again but for real
-
             $draggables.each(function () {
                 var $elem = $(this);
                 var elemId = parseInt($elem.attr("data-elem-id"));
@@ -370,9 +365,6 @@
                     if (settings.debug.events) {
                         console.log("killer_event_mousedown");
                     }
-
-                    //this actually blocks focus from being applied.. why are we preventing default?
-                    //event.preventDefault();
 
                     isMouseDown = true;
 
@@ -662,9 +654,7 @@
                                     }
                                 } else {
                                     //no dropzones are collided, are we just dragging out of one?
-                                    //console.log("no dropzones collided");
                                     if (elem.isInDropzone) {
-                                        //console.log("elem is in dropzone");
 
                                         if (settings.debug.verbose) {
                                             console.log("Droppable has been removed from its host dropzone");
@@ -672,7 +662,6 @@
                                         $elem.removeAttr("data-leaving-dropzone");
                                         $hostDropzone.removeAttr("data-drag-out-pending");
 
-                                        //TODO: is it really necessary to pass the stage elem? i think the method already knows that now.
                                         instance.detachFromDropzone($elem, $stage);
 
                                         //TODO IF snap...
@@ -808,7 +797,6 @@
             });
 
             //do more init stuff...
-
             if (settings.flow.enable && !settings.grid.enable) {
                 //apply flow on init (unless grid is enabled too)
                 instance.flowElems($allElems);
@@ -859,7 +847,7 @@
 
             }
 
-            //Keyboard Controls!!!
+            //Keyboard Controls!
             //THIS IS JUST A TEMP TEST IMPLEMENTATION
             Mousetrap.bind('shift+up', function () {
                 console.log("up");
@@ -1088,14 +1076,15 @@
         assignToCell: function ($elem, cell) {
 
             let elemId = $elem.attr("data-elem-id")
-            console.log(elemId);
 
             cell.elemIds.push(elemId);
 
-            console.log("elem: ");
-            console.log($elem);
-            console.log("assigned to cell: ");
-            console.log(cell);
+            if (this.settings.debug.verbose) {
+                console.log("elem: ");
+                console.log($elem);
+                console.log("assigned to cell: ");
+                console.log(cell);
+            }
 
             var killer_event_assign_cell = new CustomEvent("killer_event_assign_cell", {
                 "detail": {
@@ -1131,14 +1120,6 @@
 
         getPositionData: function ($elem) {
 
-            /*
-            let absX = $elem[0].getBoundingClientRect().left;
-            let absY = $elem[0].getBoundingClientRect().top;
-        
-            let relX = $elem[0].offsetLeft;
-            let relY = $elem[0].offsetTop;
-            */
-
             let offset = $elem.offset();
             let position = $elem.position();
 
@@ -1147,9 +1128,6 @@
 
             let relX = position.left;
             let relY = position.top;
-
-            //var startingX = parseFloat($elem.attr("data-start-x"));
-            // var startingY = parseFloat($elem.attr("data-start-y"));
 
             var posData = {
                 "absX": absX,
@@ -1171,20 +1149,13 @@
         checkCollisions: function ($elem) {
             var instance = this;
             var settings = this.settings;
-
-            //console.log("checkCollisions(): check one elem against all collidables");
-
-            // see if the dragged element is colliding with any other draggable or dropzone:
-            // narrow down selection of collidables. Exclude the element itself with jquery .not()...
-            // and also exclude CHILDREN of the $elem, because we don't count those as collisions...
-            //TODO is this the most efficient way? Should we keep all collidables in an object instead?
+            
             let $collidables = $("[data-collidable]").not($elem).not($elem.find("[data-collidable]"));
 
             //get array of collided elements
             let collisions = instance.overlaps($collidables, $elem, settings.collisions.collisionTolerance);
 
             //reset all
-            //TODO: dilemma: test all collidables against all collidables every time, or accept that every new check will reset previous ones?
             $collidables.removeAttr("data-collided").removeAttr("data-colliding");
             $elem.removeAttr("data-collided").removeAttr("data-colliding");
 
@@ -1195,40 +1166,6 @@
             }
             return collisions;
         },
-
-        /*
-        updateCollisions: function () {
-            //updateCollisions is experimental - bad performance and doesn't really work... but something like it may be needed.
-            var instance = this;
-            var settings = this.settings;
-
-            //console.log("updateCollisions(): check all collidables against all other collidables");
-
-            let collisions = [];
-
-            let $collidables = $("[data-collidable]");
-            $collidables.removeAttr("data-collided").removeAttr("data-colliding");
-
-            $collidables.each(function () {
-                let $this = $(this);
-
-                var $filtered = $collidables.not($this).not($this.find("[data-collidable]"));
-
-                let hits = instance.ovarlaps($this, $filtered, settings.collisions.collisionTolerance);
-
-                if (hits.length) {
-                    if (settings.debug.verbose) {
-                        console.log("updateCollisions() called. Hits:");
-                        console.log(hits);
-                    }
-                    $(hits).attr("data-collided", "true");
-                    $this.attr("data-colliding", "true");
-                    collisions.push(hits);
-                }
-            });
-            return collisions;
-        },
-        */
 
         overlaps: function ($a, $b, tolerance) {
             if (tolerance === parseInt(tolerance, 10)) {
