@@ -90,9 +90,9 @@
                 initialization: {
                     controlsCanvasId: "MySessionControls",
                 },
-                grid: { 
+                grid: {
                     enable: false,
-                    scale: 1, 
+                    scale: 1,
                     cols: 1, //set to 1 because it will grow as needed when grid is built.
                     rows: 1,
                     cellPadding: 1, //in PX. This val will be applied on all 4 sides of largest elem when determining outer grid cell dimensions.
@@ -677,25 +677,26 @@
 
                                         let snappedPos = instance.roundToGridScale(elemPos);
 
-                                        console.log("snapp");
-
                                         //SNAP! (apply padding as well)
                                         instance.moveElemToPos($elem, snappedPos[0] + settings.grid.cellPadding, snappedPos[1] + settings.grid.cellPadding, true, 500);
 
-                                        //TODO IF elem should be assigned as a new grid elem...
-                                        var cellXCoord = snappedPos[0] / stage.grid.scale;
-                                        var cellYCoord = snappedPos[1] / stage.grid.scale;
-                                        console.log(cellXCoord);
-                                        console.log(cellYCoord);
 
-                                        var cells = stage.grid.cells;
-                                        console.log(cells);
-                                        var cell = instance.getCellByCoords(cells, cellXCoord, cellYCoord);
+                                        if (settings.grid.enable) {
+                                            //TODO IF elem should be assigned as a new grid elem... (use grid or not should be elem-level)
+                                            var cellXCoord = snappedPos[0] / settings.grid.scale;
+                                            var cellYCoord = snappedPos[1] / settings.grid.scale;
+                                            console.log(cellXCoord);
+                                            console.log(cellYCoord);
 
-                                        if (cell) {
-                                            instance.assignToCell($elem, cell)
-                                        } else {
-                                            console.log("No cell found. Out of grid?");
+                                            var cells = stage.grid.cells;
+                                            console.log(cells);
+                                            var cell = instance.getCellByCoords(cells, cellXCoord, cellYCoord);
+
+                                            if (cell) {
+                                                instance.assignToCell($elem, cell)
+                                            } else {
+                                                console.log("No cell found. Out of grid?");
+                                            }
                                         }
 
                                         elem.isInDropzone = false;
@@ -928,8 +929,8 @@
 
             var requiredSize = $topLevelElems.length;
 
-            var scale = this.settings.grid.scale;
-            var padding = this.settings.grid.cellPadding;
+            var scale = this.stage.grid.scale;
+            var padding = this.stage.grid.cellPadding;
             if (this.settings.debug.verbose) {
                 console.log("specified scale: " + scale);
                 console.log("padding: " + padding);
@@ -946,7 +947,7 @@
                 }
             });
             if (this.settings.debug.verbose) { console.log("resolved scale: " + scale); }
-            this.settings.grid.scale = scale;
+            this.stage.grid.scale = scale;
 
             //is startingElemsCount less than the number of cells specified by the user in the settings?
             var specifiedSize = (this.settings.grid.cols - 2) * (this.settings.grid.rows - 2);
@@ -1149,7 +1150,7 @@
         checkCollisions: function ($elem) {
             var instance = this;
             var settings = this.settings;
-            
+
             let $collidables = $("[data-collidable]").not($elem).not($elem.find("[data-collidable]"));
 
             //get array of collided elements
